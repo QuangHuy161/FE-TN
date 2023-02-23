@@ -21,7 +21,7 @@ function Menu( ){
     }
 
     return(
-        <div id="menu" class="col border-end" dangerouslySetInnerHTML={{__html: T}}>
+        <div id="menu" class="col " dangerouslySetInnerHTML={{__html: T}}>
         </div>
         
     );

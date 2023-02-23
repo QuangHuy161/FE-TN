@@ -11,7 +11,7 @@ function Main( ){
             <div class="row">
                 <Menu/>
                 <div class="col col-10">
-                <Supplies/>
+                    <Supplies/>
                 </div>
             </div>
         </div>
