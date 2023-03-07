@@ -10,7 +10,7 @@ function Supplies(){
         {type:'img',label:"Chọn ảnh",id:"img",required:"yes"}
     ]
 
-    let d_el_data=["a","b","c","d"]
+    let d_el_data=["a","b","c","d","e"]
     let T1='';
     for (let index = 0; index < el.length; index++) {
         let temp=''
