@@ -1,18 +1,5 @@
-import { useState } from "react";
-
+import Data_Table from "./Data_table";
 function Supplies(){
-    const [inputs, setInputs] = useState({});
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}))
-    }
-    
-    const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(inputs);
-    }
-
 
     let el=[
         {type:'text',label:"ID",id:"id",required:"yes"},
@@ -20,7 +7,7 @@ function Supplies(){
         {type:'text',label:"Nguồn gốc",id:"nguongoc",required:"yes"},
         {type:'dropdown',label:"Đơn vị",id:"donvi",required:"yes"},
         {type:'dropdown',label:"Loại",id:"loai",required:"yes"},
-        {type:'img',label:"Chọn ảnh",id:"anh",required:"yes"}
+        {type:'img',label:"Chọn ảnh",id:"img",required:"yes"}
     ]
 
     let d_el_data=["a","b","c","d"]
@@ -30,7 +17,7 @@ function Supplies(){
         if(el[index].type=="text"){
             temp=`
             <div class="row m-1">
-                <label class="col-5" for=${el[index].id}>${el[index].label} </label>
+                <label class="text-start col-5" for=${el[index].id}>${el[index].label} </label>
                 <input class="col-7" type="text" id=${el[index].id}> 
             </div>
             `
@@ -43,7 +30,7 @@ function Supplies(){
             }
             temp=`
                 <div class="row m-1">
-                    <label class="col-5" for=${el[index].id}>${el[index].label}</label>
+                    <label class="text-start col-5" for=${el[index].id}>${el[index].label}</label>
                     <select class="col-7" id=${el[index].id}>
                         ${d_el}
                     </select>
@@ -61,25 +48,38 @@ function Supplies(){
         T1+=temp;
     }
     let T =`
-            <div class="d-grid justify-content-start text-lg-start row w-75 m-1  form-group">
+            <div class="d-grid justify-content-start row w-75 m-1  form-group">
                 ${T1}
             </div>
             <input type="submit" class="btn btn-submit text-white mb-2"></input>
     `
+    let data=[]
+    let m_data={};
+
     function ValidForm(e){
         e.preventDefault();
-        let arr=[];
-        
-        el.filter((k)=>{arr.push(document.getElementById(k.id).value)})
-        
-        console.log(arr)
-        
-    }
+        let arr=[]
+        let label=[]
+        el.filter((k)=>{
+            let t=k.id;
+            label.push(k.label);
+            arr.push(document.getElementById(t).value);
+        })
+        if(window.localStorage.getItem("m_data")!== null)
+            data=JSON.parse(window.localStorage.getItem("m_data")).data;
+        data.push(arr);
+        m_data.head=label;
+        m_data.data=data;
 
+        window.localStorage.setItem("m_data",JSON.stringify(m_data));
+
+        console.log(m_data)
+    }
     return(
         <div>
             <form onSubmit={ValidForm} id="form_data "method="get" dangerouslySetInnerHTML={{__html: T}}>
             </form>
+            {Data_Table(window.localStorage.getItem("m_data"))}
         </div>
     );
 

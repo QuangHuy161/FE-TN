@@ -10,8 +10,9 @@ function Main( ){
             </div>
             <div class="row">
                 <Menu/>
-                <div class="col col-10">
+                <div class="col">
                     <Supplies/>
+                    
                 </div>
             </div>
         </div>
