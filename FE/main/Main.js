@@ -1,6 +1,7 @@
 import Menu from "./Menu/Menu";
 import Top from "./Top/Top";
 import Supplies from "./Supplies/Supplies";
+import Staff from "./Staff/staff";
 function Main( ){
 
     return(
@@ -12,7 +13,7 @@ function Main( ){
                 <Menu/>
                 <div class="col">
                     <Supplies/>
-                    
+                    <Staff/>
                 </div>
             </div>
         </div>

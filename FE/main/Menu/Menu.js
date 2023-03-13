@@ -9,7 +9,7 @@ function Menu( ){
     let T='';
     for (let index = 0; index < el.length; index++) {
         let t =`
-            <div class="row m-1 ">
+            <div class="row m-1">
                 <button type="button" class="btn btn-menu rounded-1">
                     <a href=${"/" + el[index].title} class="nav-link">
                         ${el[index].value}
@@ -21,7 +21,7 @@ function Menu( ){
     }
 
     return(
-        <div id="menu" class="col col-2" dangerouslySetInnerHTML={{__html: T}}>
+        <div id="menu" class="col col-sm-2 " dangerouslySetInnerHTML={{__html: T}}>
         </div>
         
     );

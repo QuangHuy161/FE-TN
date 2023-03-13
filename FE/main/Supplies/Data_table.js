@@ -1,4 +1,7 @@
 import "./data_table.scss"
+import DataTable from "react-data-table-component"
+
+
 function Data_Table(obj){
     if(obj === null)
         return(
@@ -6,46 +9,36 @@ function Data_Table(obj){
         );
 
     let arr=JSON.parse(obj);
-    const label=arr.head;
+    const label=arr.head[0];
     const meta_data=arr.data;
 
-    let th=`<th scope="col"></th>`;
+    let columns=[]
     for (let index = 0; index < label.length; index++) {
-        th+=`<th scope="col">${label[index]}</th>`
-        
-    }
-    let thead=`
-        <tr>
-            ${th}
-        </tr>
-    `;
 
-    let trow=``;
-    for (let i = 0; i < meta_data.length; i++) {
-        let m=`<th scope="row">${i}</th>`
-        for (let j = 0; j < meta_data[i].length; j++) {
-            const n =`<td>${meta_data[i][j]}</td>`;
-            m+=n;
+        let t={
+            name: label[index],
+            selector:row=> row[arr.head[1][index]],
+            sortable:true,
+            conditionalCellStyles: [
+                {
+                    when: row => row[arr.head[1][index]],
+                    style: {
+                        width:"2px",
+                    },
+                },
+            ]
         }
-        m=`
-        <tr>
-            ${m}
-        </tr>
-        `
-        trow+=m;
+        console.log(meta_data[index])
+
+        columns.push(t);
     }
 
     return (
-        <div id="data_list" class="data_table">
-            <table class="table">
-            <thead dangerouslySetInnerHTML={{__html:thead}}>
-            </thead>
-            <tbody  dangerouslySetInnerHTML={{__html:trow}}>
-            </tbody>
-            </table>
-
-        </div>
-
+        <DataTable
+            columns={columns}
+            data={meta_data}
+            selectableRows
+        />
     )
 
 

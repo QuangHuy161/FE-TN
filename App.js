@@ -2,6 +2,8 @@ import './App.css';
 import './App.scss';
 import Main from './FE/main/Main';
 import Supplies from './FE/main/Supplies/Supplies';
+import Order from './FE/main/Order/Order';
+import Staff from './FE/main/Staff/staff';
 import 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -17,11 +19,11 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Main/>}>
-            <Route path="/banhang" component={<Supplies/>} />
-            {/* <Route path="/nhanvien" component={Contact} /> */}
-            {/* <Route path="/vattu" component={Contact} /> */}
+            <Route path="/vattu" component={<Supplies/>} />
+            <Route path="/nhanvien" component={Staff} />
             {/* <Route component={NotFound}/> */}
           </Route>
+          <Route path="/banhang" element={<Order/>} />
         </Routes>
       </div>
      

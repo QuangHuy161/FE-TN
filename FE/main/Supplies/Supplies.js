@@ -7,7 +7,7 @@ function Supplies(){
         {type:'text',label:"Nguồn gốc",id:"nguongoc",required:"yes"},
         {type:'dropdown',label:"Đơn vị",id:"donvi",required:"yes"},
         {type:'dropdown',label:"Loại",id:"loai",required:"yes"},
-        {type:'img',label:"Chọn ảnh",id:"img",required:"yes"}
+        {type:'img',label:"Ảnh",id:"img",required:"yes"}
     ]
 
     let d_el_data=["a","b","c","d","e"]
@@ -57,27 +57,31 @@ function Supplies(){
     let m_data={};
 
     function ValidForm(e){
-        e.preventDefault();
-        let arr=[]
+        let data=[]
         let label=[]
+        let ID=[]
+        let t_obj={};
         el.filter((k)=>{
-            let t=k.id;
-            label.push(k.label);
-            arr.push(document.getElementById(t).value);
+            let t_id=k.id;
+            ID.push(t_id);
+            let t_label=k.label;
+            let t_value=document.getElementById(t_id).value;
+            label.push(t_label);
+            t_obj[t_id]=t_value;
         })
+        console.log(t_obj)
         if(window.localStorage.getItem("m_data")!== null)
             data=JSON.parse(window.localStorage.getItem("m_data")).data;
-        data.push(arr);
-        m_data.head=label;
+        data.push(t_obj);
+        m_data.head=[label,ID];
         m_data.data=data;
 
         window.localStorage.setItem("m_data",JSON.stringify(m_data));
 
-        console.log(m_data)
     }
     return(
-        <div>
-            <form onSubmit={ValidForm} id="form_data "method="get" dangerouslySetInnerHTML={{__html: T}}>
+        <div class="col-lg">
+            <form onSubmit={ValidForm} id="form_data "method="POST" dangerouslySetInnerHTML={{__html: T}}>
             </form>
             {Data_Table(window.localStorage.getItem("m_data"))}
         </div>
