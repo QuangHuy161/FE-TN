@@ -10,7 +10,7 @@ function Menu( ){
     for (let index = 0; index < el.length; index++) {
         let t =`
             <div class="row m-1">
-                <button type="button" class="btn btn-menu rounded-1">
+                <button type="button" class=" bt btn btn-menu rounded-1">
                     <a href=${"/" + el[index].title} class="nav-link">
                         ${el[index].value}
                     </a>

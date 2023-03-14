@@ -1,4 +1,5 @@
 import Data_Table from "./Data_table";
+import Tool from "../Tool/Tool";
 function Supplies(){
 
     let el=[
@@ -51,7 +52,7 @@ function Supplies(){
             <div class="d-grid justify-content-start row w-75 m-1  form-group">
                 ${T1}
             </div>
-            <input type="submit" class="btn btn-submit text-white mb-2"></input>
+            <input type="submit" class="bt btn btn-submit text-white mb-2"></input>
     `
     let data=[]
     let m_data={};
@@ -83,6 +84,7 @@ function Supplies(){
         <div class="col-lg">
             <form onSubmit={ValidForm} id="form_data "method="POST" dangerouslySetInnerHTML={{__html: T}}>
             </form>
+            {<Tool/>}
             {Data_Table(window.localStorage.getItem("m_data"))}
         </div>
     );

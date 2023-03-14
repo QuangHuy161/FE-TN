@@ -35,9 +35,12 @@ function Data_Table(obj){
 
     return (
         <DataTable
+            title="Tổng hợp nguyên liệu"
             columns={columns}
             data={meta_data}
             selectableRows
+            striped
+            pagination
         />
     )
 
