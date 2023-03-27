@@ -28,8 +28,6 @@ function Data_Table(obj){
                 },
             ]
         }
-        console.log(meta_data[index])
-
         columns.push(t);
     }
 

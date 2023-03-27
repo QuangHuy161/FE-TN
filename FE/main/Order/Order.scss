@@ -40,5 +40,13 @@
     }
     .order_info{
         background-color: white;
+        height: 20vh;
+        .input-group-prepend{
+            width: 12vw;
+        }
+        input[type="text"]{
+            border: 1px solid rgb(188, 188, 188);
+            border-radius: 2px;
+        }
     }
 }

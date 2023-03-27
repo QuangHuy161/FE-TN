@@ -4,6 +4,7 @@ import Main from './FE/main/Main';
 import Supplies from './FE/main/Supplies/Supplies';
 import Order from './FE/main/Order/Order';
 import Staff from './FE/main/Staff/staff';
+import Login from './FE/main/Login/Login';
 import 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -20,10 +21,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Main/>}>
             <Route path="/vattu" component={<Supplies/>} />
-            <Route path="/nhanvien" component={Staff} />
+            
             {/* <Route component={NotFound}/> */}
           </Route>
+          <Route path="/nhanvien" element={<Staff/>} />
           <Route path="/banhang" element={<Order/>} />
+          <Route path="/auth" element={<Login/>} />
         </Routes>
       </div>
      

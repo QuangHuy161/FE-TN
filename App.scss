@@ -2,13 +2,13 @@
     font-size: 1.2rem !important;
     font-weight: 600;
     letter-spacing: 1px;
-    a{
-        color: white;
-    }
     background-color: rgb(152, 221, 198) !important;
     transition: 1s linear;
     &:hover{
         background-color: rgb(109, 167, 147) !important;
+    }
+    &:active{
+      border-color: transparent !important;
     }
 }
 

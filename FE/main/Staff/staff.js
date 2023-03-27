@@ -1,6 +1,9 @@
+import Nhaplieu from "../nhaplieu/nhaplieu";
 function Staff(){
     return(
-    <div>Staff</div>
+    <div>
+           Nhân viên
+    </div>
     )
 }
 

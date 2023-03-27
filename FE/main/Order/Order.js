@@ -48,18 +48,7 @@ function Order(){
             soluong:3,
             gia:'15000'
         },
-        {
-            stt:5,
-            ten:'Trà sữa trân châu đường đen',
-            soluong:3,
-            gia:'15000'
-        },
-        {
-            stt:6,
-            ten:'Trà sữa trân châu đường đen',
-            soluong:3,
-            gia:'15000'
-        },
+     
     ]
     let topping=[
         {
@@ -99,14 +88,12 @@ function Order(){
                         striped
                         columns={mon}
                         data={data_mon}
-                        pagination
                     />
                     <div class="border-top border-secondary border-3 mt-5"></div>
                     <DataTable
                         title="Topping"
                         columns={topping}
                         data={data_topping}
-                        pagination
                     />
                 </div>
                 <div class="col-sm m-2 gx-0">
@@ -268,28 +255,28 @@ function Order(){
                 </div>
 
             </div>
-            <div class="order_info fixed-bottom border-top border-3 border-success m-3">
-                <div class="text-start m-1">
-                    <form class="container w-25 m-0 info_order" method="POST">
+            <div class="row order_info fixed-bottom border-top border-3 border-success p-3">
+                <div class="col-sm text-start m-1">
+                    <form class="container m-0 info_order" method="POST">
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
-                                <span class="input-group-text list-group-item-primary" id="order_ten">Tên khách</span>
+                                <span class="form_label" id="order_ten">Tên khách</span>
                             </div>
-                            <input type="text" class="form-control"  aria-describedby="order_ten"/>
+                            <input type="text" class=""  aria-describedby="order_ten"/>
                         </div>
 
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
-                                <span class="input-group-text list-group-item-primary" id="order_sdt">Số điện thoại</span>
+                                <span class="form_label" id="order_sdt">Số điện thoại</span>
                             </div>
-                            <input type="text" class="form-control"  aria-describedby="order_sdt"/>
+                            <input type="text" class=""  aria-describedby="order_sdt"/>
                         </div>
                        
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
-                                <span class="input-group-text list-group-item-primary">Tiền khách đưa</span>
+                                <span class="form_label">Tiền khách đưa</span>
                             </div>
-                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"/>
+                            <input type="text" class="" aria-label="Amount (to the nearest dollar)"/>
                             <div class="input-group-append">
                                 <span class="input-group-text">.000 VND</span>
                             </div>
@@ -297,7 +284,7 @@ function Order(){
                        
                     </form>
                 </div>
-                <div class="button_payment text-end">
+                <div class=" col-sm button_payment text-end">
                     <button class="bt btn rounded-1">Thanh Toán</button>
                 </div>
             </div>
