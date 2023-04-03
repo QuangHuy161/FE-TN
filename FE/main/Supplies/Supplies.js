@@ -1,47 +1,81 @@
 import Data_Table from "./Data_table";
 import Tool from "../Tool/Tool";
 import Nhaplieu from "../nhaplieu/nhaplieu";
+import React, { useState } from 'react';
+import Axios from "axios"
 function Supplies(){
+    const [ten,setTen] = useState("A")
+    const [donvi,setDonvi] = useState("g")
+    const [nhomvattu,setNhomvattu] = useState("a")
+    const [loai,setLoai] = useState("vl")
+    const [img,setImg] = useState("")
     
-    let data=[]
-    let m_data={};
+    const handleSubmit = (e) => {
+          e.preventDefault();
+    
+          Axios.post('http://localhost:3000/add_data', {
+            label: ten,
+            donvi: donvi,
+            nhomvattu:nhomvattu,
+            loai: loai,
+            img: img
+          })
+      }
+        let DONVI = [];
+    Axios.get('http://localhost:3000/donvi')
+    .then( res => {
+        console.log(res)
+        DONVI=res
+    })
+    .catch((error) => {
+        console.log(error)
+    })
 
-    function ValidForm(e){
-        // let data=[]
-        // let label=[]
-        // let ID=[]
-        // let t_obj={};
-        // el.filter((k)=>{
-        //     let t_id=k.id;
-        //     ID.push(t_id);
-        //     let t_label=k.label;
-        //     let t_value=document.getElementById(t_id).value;
-        //     label.push(t_label);
-        //     t_obj[t_id]=t_value;
-        // })
-        // console.log(t_obj)
-        // if(window.localStorage.getItem("m_data")!== null)
-        //     data=JSON.parse(window.localStorage.getItem("m_data")).data;
-        // data.push(t_obj);
-        // m_data.head=[label,ID];
-        // m_data.data=data;
-
-        // window.localStorage.setItem("m_data",JSON.stringify(m_data));
-    }
-
+    let NHOMVATU = [];
+    Axios.get('http://localhost:3000/nhomvattu')
+    .then( res => {
+        console.log(res)
+        NHOMVATU=res
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+        
     return(
         <div class="col-lg">
-            <form onSubmit={ValidForm} id="form_data "method="POST" >
-                { Nhaplieu(
-                    [
-                        {type:'text',label:"ID",id:"id",required:""},
-                        {type:'text',label:"Tên",id:"ten",required:"required"},
-                        {type:'dropdown',label:"Đơn vị",id:"donvi",required:"required"},
-                        {type:'dropdown',label:"Nhóm vât tư",id:"nhomvattu",required:""},
-                        {type:'dropdown',label:"Loại",id:"loai",required:"required"},
-                        {type:'img',label:"Ảnh",id:"img",required:""}
-                    ]
-                )}
+            <form id="form_data" className="container" onSubmit={handleSubmit} method="POST" action="/add_data">
+                <div class="row m-1">
+                    <label class="text-start col-5"> Tên</label>
+                    <input required class="col-7 border p-1 rounded-1" type="text" onChange={(e) => {setTen(e.target.value)}} /> 
+                </div>
+                <div class="row m-1">
+                    <label class="text-start col-5" >Đơn vị</label>
+                    <select  class="col-7 border p-1 rounded-1" onChange={(e) => {setDonvi(e.target.value)}} >
+                        <option value="a" >a</option>
+                        <option value="b" >a</option>
+                        <option value="c" >c</option>
+                    </select>
+                </div>
+                <div class="row m-1">
+                    <label class="text-start col-5" > Nhóm vật tư</label>
+                    <select  class="col-7 border p-1 rounded-1" onChange={(e) => {setNhomvattu(e.target.value)}}>
+                        <option value="a" >a</option>
+                        <option value="b" >a</option>
+                        <option value="c" >c</option>
+                    </select>
+                </div>
+                <div class="row m-1">
+                    <label class="text-start col-5" >Loại</label>
+                    <select  class="col-7 border p-1 rounded-1" onChange={(e) => {setLoai(e.target.value)}}>
+                        <option value="a" >a</option>
+                        <option value="b" >a</option>
+                        <option value="c" >c</option>
+                    </select>
+                </div>
+                <div class="row m-1">
+                    <input onChange={(e) => {setImg(e.target.value)}} type="file" class="form-control-file" accept="image/png, image/jpeg" />
+                </div>
+                <input type="submit" class="bt btn btn-submit text-white mb-2"></input>
             </form>
             {<Tool/>}
             {Data_Table(window.localStorage.getItem("m_data"))}

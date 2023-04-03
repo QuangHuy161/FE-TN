@@ -40,13 +40,10 @@ function Nhaplieu(el){
             <div class="d-grid justify-content-start row w-75 m-1  form-group">
                 ${T1}
             </div>
-            <input type="submit" class="bt btn btn-submit text-white mb-2"></input>
     `
     
     return(
-        <div>
-            <form id="form_data "method="POST" dangerouslySetInnerHTML={{__html: T}}>
-            </form>
+        <div dangerouslySetInnerHTML={{__html: T}}>
         </div>
     )
 
