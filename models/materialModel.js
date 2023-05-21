@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose")
 
-const materialSchema = new mongoose.Schema({
-    ten: {
-            type: String,
-        required: true
-    },
-    donvi: {
-        type: String,
-        required: true
-    }
-});
+const materialSchema = mongoose.Schema(
+    {
+        _id:String,
+        ten:  String,
+        donvi:String,
+        nhomvattu:String,
+        img:String,
+        giatri:Number,
+        gia:Number
+    }
+)
 
-const Material = mongoose.model('material', materialSchema);
-module.exports = Material;
+module.exports = materialSchema
