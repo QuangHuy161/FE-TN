@@ -7,7 +7,7 @@ function Data_Table(obj){
         return(
             <div></div>
         );
-
+    
     let arr=JSON.parse(obj);
     const label=arr.head[0];
     const meta_data=arr.data;
