@@ -2,47 +2,45 @@ import "./data_table.scss"
 import DataTable from "react-data-table-component"
 
 
-function Data_Table(obj){
-    if(obj === null)
-        return(
-            <div></div>
-        );
-    
-    let arr=JSON.parse(obj);
-    const label=arr.head[0];
-    const meta_data=arr.data;
+function DATA_TABLE({label,data}){
 
+    // set the initial state
     let columns=[]
     for (let index = 0; index < label.length; index++) {
 
         let t={
             name: label[index],
-            selector:row=> row[arr.head[1][index]],
+            selector:row=> (
+                <div data-tag="allowRowEvents">
+                    <div aria-hidden="true" >
+                        {row[label[index]]}
+                    </div>
+                </div>
+            ),
             sortable:true,
-            conditionalCellStyles: [
-                {
-                    when: row => row[arr.head[1][index]],
-                    style: {
-                        width:"2px",
-                    },
-                },
-            ]
+            
         }
         columns.push(t);
     }
+
+    const meta_data =data;
+    const onRowClicked = (row, event) => {  };
 
     return (
         <DataTable
             title="Tổng hợp nguyên liệu"
             columns={columns}
+            dense
+            onRowClicked={onRowClicked}
             data={meta_data}
             selectableRows
             striped
             pagination
+            responsive
         />
     )
 
 
 }
 
-export default Data_Table;
+export default DATA_TABLE;

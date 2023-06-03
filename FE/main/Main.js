@@ -9,35 +9,35 @@ function Main(props ){
 
     if(pageMode==='vattu')
     return(
-        <div  class="container-xl">
-            <div class="row">
+        <div  className="container-xl">
+            <div className="row">
                 <Top/>
             </div>
-            <div class="row">
-                <div id="menu" class="col col-sm-2 " >
-                    <div class="row m-1">
-                        <button  class=" bt btn btn-menu rounded-1" onClick={() => setPageMode("vattu")} >
-                            <span class="nav-link"  >
+            <div className="row">
+                <div id="menu" className="col col-sm-2 " >
+                    <div className="row m-1">
+                        <button  className=" bt btn btn-menu rounded-1" onClick={() => setPageMode("vattu")} >
+                            <span className="nav-link"  >
                                Vật tư
                             </span>
                         </button>
                     </div>
-                    <div class="row m-1">
-                        <button  class=" bt btn btn-menu rounded-1">
-                            <a href="/banhang" class="nav-link" >
+                    <div className="row m-1">
+                        <button  className=" bt btn btn-menu rounded-1">
+                            <a href="/banhang" className="nav-link" >
                                 Bán Hàng
                             </a>
                         </button>
                     </div>
-                    <div class="row m-1">
-                        <button  class=" bt btn btn-menu rounded-1" onClick={() => setPageMode("nhanvien")} >
-                            <span class="nav-link"  >
+                    <div className="row m-1">
+                        <button  className=" bt btn btn-menu rounded-1" onClick={() => setPageMode("nhanvien")} >
+                            <span className="nav-link"  >
                                Nhân Viên
                             </span>
                         </button>
                     </div>
                 </div>
-                <div class="col">
+                <div className="col">
                     <Supplies/>
                 </div>
             </div>
@@ -46,35 +46,35 @@ function Main(props ){
     else{
         if(pageMode==='nhanvien')
         return(
-            <div  class="container-xl">
-                <div class="row">
+            <div  className="container-xl">
+                <div className="row">
                     <Top/>
                 </div>
-                <div class="row">
-                    <div id="menu" class="col col-sm-2 " >
-                        <div class="row m-1">
-                            <button class=" bt btn btn-menu rounded-1" onClick={() => setPageMode("vattu")}>
-                                <span class="nav-link"   >
+                <div className="row">
+                    <div id="menu" className="col col-sm-2 " >
+                        <div className="row m-1">
+                            <button className=" bt btn btn-menu rounded-1" onClick={() => setPageMode("vattu")}>
+                                <span className="nav-link"   >
                                 Vật tư
                                 </span>
                             </button>
                         </div>
-                        <div class="row m-1">
-                            <button  class=" bt btn btn-menu rounded-1">
-                                <a href="/banhang" class="nav-link" >
+                        <div className="row m-1">
+                            <button  className=" bt btn btn-menu rounded-1">
+                                <a href="/banhang" className="nav-link" >
                                     Bán Hàng
                                 </a>
                             </button>
                         </div>
-                        <div class="row m-1">
-                            <button class=" bt btn btn-menu rounded-1" onClick={() => setPageMode("nhanvien")} >
-                                <span class="nav-link"  >
+                        <div className="row m-1">
+                            <button className=" bt btn btn-menu rounded-1" onClick={() => setPageMode("nhanvien")} >
+                                <span className="nav-link"  >
                                 Nhân Viên
                                 </span>
                             </button>
                         </div>
                     </div>
-                    <div class="col">
+                    <div className="col">
                         <Staff/>
                     </div>
                 </div>
