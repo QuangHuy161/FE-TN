@@ -1,34 +1,11 @@
 import DATA_TABLE from "./Data_table";
-import Tool from "../Tool/Tool";
 import React, { useState,useEffect } from 'react';
 import Axios from "axios"
 
 
 Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
-// function removeAccents(str) {
-//     var AccentsMap = [
-//       "aàảãáạăằẳẵắặâầẩẫấậ",
-//       "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
-//       "dđ", "DĐ",
-//       "eèẻẽéẹêềểễếệ",
-//       "EÈẺẼÉẸÊỀỂỄẾỆ",
-//       "iìỉĩíị",
-//       "IÌỈĨÍỊ",
-//       "oòỏõóọôồổỗốộơờởỡớợ",
-//       "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
-//       "uùủũúụưừửữứự",
-//       "UÙỦŨÚỤƯỪỬỮỨỰ",
-//       "yỳỷỹýỵ",
-//       "YỲỶỸÝỴ"    
-//     ];
-//     for (var i=0; i<AccentsMap.length; i++) {
-//       var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
-//       var char = AccentsMap[i][0];
-//       str = str.replace(re, char);
-//     }
-//     return  str.toLowerCase();
-//   }
+
 
 function genID(str){
     let t='';
@@ -44,7 +21,7 @@ function Supplies(){
         ten:"A",
         donvi:"l(lit)",
         nhomvattu:"Nguyên Liệu",
-        giatri:0,
+        soluong:0,
         tien:0,
         img:''
     })
@@ -57,6 +34,16 @@ function Supplies(){
     let donvi_option='';
     let nhomvattu_option='';
     
+    function convertToBase64(e){
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () =>{
+            setVatlieu({...vatlieu,img:reader.result})
+        }
+        reader.onerror = error =>{
+            console.log("Error",error);
+        }
+    }
     useEffect(() => {
         async function FetchData (){
             await Axios({
@@ -101,9 +88,10 @@ function Supplies(){
             donvi: vatlieu.donvi,
             nhomvattu:vatlieu.nhomvattu,
             img: vatlieu.img,
-            giatri: vatlieu.giatri,
-            gia:vatlieu.tien
+            soluong: vatlieu.soluong,
+            tien:(vatlieu.soluong === 0 ?  vatlieu.tien : vatlieu.tien*vatlieu.soluong)
         })
+        alert(`Đã thêm vật tư ${vatlieu.ten}`)
     }
         
     return(
@@ -131,25 +119,36 @@ function Supplies(){
                     </select>
                 </div>
                 <div className="row m-1">
-                    <label className="text-start col-5"> Giá trị</label>
+                    <label className="text-start col-5"> Số Lượng</label>
                     <input className="col-7 border p-1 rounded-1" type="number" min="0" step="any"
-                    onChange={(e) => {setVatlieu({...vatlieu,giatri:e.target.value})}}/> 
+                    onChange={(e) => {setVatlieu({...vatlieu,soluong:e.target.value})}}/> 
                 </div>
                 <div className="row m-1">
-                    <label className="text-start col-5"> Giá tiền</label>
+                    <label className="text-start col-5"> Giá tiền (/1 đơn vị )</label>
                     <input className="col-7 border p-1 rounded-1" type="number" min="0" step="1000"
                     onChange={(e) => {setVatlieu({...vatlieu,tien:e.target.value})}}/> 
                 </div>
                 <div className="row m-1">
                     <input
-                    onChange={(e) => {setVatlieu({...vatlieu,img:e.target.value})}}
+                    onChange={convertToBase64}
                     type="file" className="form-control-file" accept="image/png, image/jpeg" />
+                    <div
+                        style={
+                            {
+                                width:'200px',
+                                height: '200px'
+                            }
+                        }
+                    >
+                    {vatlieu.img === '' || vatlieu.img===null ? '': <img class="img-thumbnail" src={vatlieu.img} alt="" />}
+                    </div>
+                
                 </div>
                 <input type="submit" className="bt btn btn-submit text-white mb-2"></input>
             </form>
-            {<Tool/>}
-            
             {<DATA_TABLE
+                title="Tổng hợp vật tư"
+                head= {["ID", "Tên", "Đơn vị", "Loại Vật tư", "Ảnh", " Số Lượng", "Tiền"]}
                 label= {list.head}
                 data = {list.data}
             />}

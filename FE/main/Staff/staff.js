@@ -1,4 +1,3 @@
-import Nhaplieu from "../nhaplieu/nhaplieu";
 function Staff(){
     return(
     <div>

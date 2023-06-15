@@ -5,8 +5,7 @@ import Supplies from './FE/main/Supplies/Supplies';
 import Order from './FE/main/Order/Order';
 import Staff from './FE/main/Staff/staff';
 import Login from './FE/main/Login/Login';
-import 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -28,9 +27,9 @@ function App() {
           <Route path="/banhang" element={<Order/>} />
           <Route path="/auth" element={<Login/>} />
         </Routes>
+        
       </div>
-     
-    </Router>
+      </Router>
   );
 }
 
