@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const TypeSchema = new mongoose.Schema({
-        _id:Number,
+        _id:String,
         ten : String,
-        ma: String
+        tenphu:String,
 });
 
 module.exports = TypeSchema;

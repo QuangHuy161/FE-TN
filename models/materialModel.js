@@ -7,8 +7,8 @@ const materialSchema = mongoose.Schema(
         donvi:String,
         nhomvattu:String,
         img:String,
-        giatri:Number,
-        gia:Number
+        soluong:Number,
+        tien:Number
     }
 )
 
