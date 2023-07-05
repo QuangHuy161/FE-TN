@@ -1,20 +1,9 @@
 import DATA_TABLE from "./Data_table";
 import React, { useState,useEffect } from 'react';
 import Axios from "axios"
-
+// import {genID} from "../function/function";
 
 Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
-
-
-
-function genID(str){
-    let t='';
-    const s = str.toLowerCase();
-    for (var i =0; i < str.length; i ++){
-        t+=s.charCodeAt(i);
-    }
-    return t;
-}
 
 function Supplies(){
     const [vatlieu,setVatlieu] = useState({
@@ -31,9 +20,6 @@ function Supplies(){
     const [DONVI,setDONVI]= useState([])
     const [NHOMVATTU,setNHOMVATTU]= useState([])
 
-    let donvi_option='';
-    let nhomvattu_option='';
-    
     function convertToBase64(e){
         var reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
@@ -45,45 +31,43 @@ function Supplies(){
         }
     }
     useEffect(() => {
-        async function FetchData (){
-            await Axios({
-                        method: 'get',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        url: 'http://localhost:5000/donvi',
-                    }).then(function (response) {
-                        setDONVI(response.data)
-                    });
-    
-            await Axios({
-                        method: 'get',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        url: 'http://localhost:5000/nhomvattu',
-                    }).then(function (response) {
-                        setNHOMVATTU(response.data)
-                    });
+        setTimeout( async() =>{
+            let DV= await Axios({
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: 'http://localhost:5000/donvi',
+            })
 
-            await Axios({
-                        method: 'get',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        url: 'http://localhost:5000/list_mon',
-                    }).then(function (response) {
-                        let head=Object.keys(response.data[0])
-                        head.pop()
-                        let data=response.data;
-                        setList({head:head,data:data})
-                    });
-        }
-        FetchData();
+            let NVT= await Axios({
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: 'http://localhost:5000/nhomvattu',
+            })
+            let L_M= await Axios({
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: 'http://localhost:5000/list_mon',
+            })
+
+
+            setDONVI(DV.data)
+            setNHOMVATTU(NVT.data)
+            
+            let head=Object.keys(L_M.data[0]);
+            head.pop();
+            setList({head:head,data:L_M.data})
+            
+        },1000)
+        
         return ;
     },[]);
-
-    donvi_option = DONVI.map(item => <option key={item.ma} value={item.ten} >{item.ten}</option>);
-    nhomvattu_option = NHOMVATTU.map(item => <option key={item.ma} value={item.ten} >{item.ten}</option>);
+    
+    let donvi_option= DONVI.map(item => <option key={item._id} value={item.ten} >{item.ten}</option>);
+    let nhomvattu_option = NHOMVATTU.map(item => <option key={item._id} value={item.ten} >{item.ten}</option>);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         Axios.post('http://localhost:5000/add_data', {
-            _id: genID(vatlieu.ten),
             ten: vatlieu.ten,
             donvi: vatlieu.donvi,
             nhomvattu:vatlieu.nhomvattu,
@@ -119,13 +103,13 @@ function Supplies(){
                     </select>
                 </div>
                 <div className="row m-1">
-                    <label className="text-start col-5"> Số Lượng</label>
+                    <label className="text-start col-5"> Số Lượng(định theo đơn vị)</label>
                     <input className="col-7 border p-1 rounded-1" type="number" min="0" step="any"
                     onChange={(e) => {setVatlieu({...vatlieu,soluong:e.target.value})}}/> 
                 </div>
                 <div className="row m-1">
                     <label className="text-start col-5"> Giá tiền (/1 đơn vị )</label>
-                    <input className="col-7 border p-1 rounded-1" type="number" min="0" step="1000"
+                    <input className="col-7 border p-1 rounded-1" type="number" min="0" step="100"
                     onChange={(e) => {setVatlieu({...vatlieu,tien:e.target.value})}}/> 
                 </div>
                 <div className="row m-1">

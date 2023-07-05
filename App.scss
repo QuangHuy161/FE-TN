@@ -12,6 +12,9 @@
     }
 }
 
+.btn{
+  border: none !important;
+}
 
 //----------------------CUSTOM SCROLL BAR------------------------
 /* width */
@@ -37,3 +40,7 @@
     background: rgb(109, 167, 147) !important; 
   }
 
+.pe{
+  cursor: pointer;
+  color: #198754;
+}

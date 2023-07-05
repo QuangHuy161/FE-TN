@@ -1,254 +1,85 @@
 import "./Order.scss"
-import DataTable from "react-data-table-component";
-import image from "../../../img/img_drink.jpg"
+import React, { useState,useEffect } from 'react';
+import Axios from "axios"
 function Order(){
 
-    let mon=[
-        {
-            name: "STT",
-            selector: row => row.stt,
-        },
-        {
-            name: "Tên món",
-            selector: row => row.ten,
-        },
-        {
-            name: "Số Lượng",
-            selector: row => row.soluong,
-        },
-        {
-            name: "Giá",
-            selector: row => row.gia,
-        }
-        
-    ]
+    const [MENU,setMENU]= useState([])
+    
+    useEffect(() => {
+        setTimeout(async () =>{
+            let MN= await Axios({
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: 'http://localhost:5000/menu',
+            })
+            setMENU(MN.data)
+        },1000)
+        return ;
+    },[]);
 
-    let data_mon=[
-        {
-            stt:1,
-            ten:'Trà sữa trân châu',
-            soluong:1,
-            gia:'15000'
-        },
-        {
-            stt:2,
-            ten:'Trà sữa trân châu đường đen',
-            soluong:3,
-            gia:'15000'
-        },
-        {
-            stt:3,
-            ten:'Trà sữa trân châu đường đen',
-            soluong:3,
-            gia:'15000'
-        },
-        {
-            stt:4,
-            ten:'Trà sữa trân châu đường đen',
-            soluong:3,
-            gia:'15000'
-        },
-     
-    ]
-    let topping=[
-        {
-            name: "STT",
-            selector: row => row.stt,
-        },
-        {
-            name: "Tên món",
-            selector: row => row.ten,
-        },
-        {
-            name: "Giá",
-            selector: row => row.gia,
-        }
-        
-    ]
+    const addMon= (e) =>{
+        e.preventDefault();
+    }
+    const addTopping= (e) =>{
+        e.preventDefault();
+    }
 
-    let data_topping=[
-        {
-            stt:1,
-            ten:'Trân châu đen',
-            gia:'5000'
-        },
-        {
-            stt:2,
-            ten:'trân châu trắng',
-            gia:'5000'
-        },
-    ]
+    function mon(item) {
+        return item.nhomvattu ==="Món";
+    }
+    function topping(item) {
+        return item.nhomvattu ==="Topping";
+    }
+
+    let tdata_mon;
+    let tdata_topping;
+    if(MENU[0]=== undefined) 
+    tdata_mon=
+        <>
+        </>
+    else{
+        let m =MENU.filter(mon)
+        let tp =MENU.filter(topping)
+            tdata_mon = m.map( item =>
+                        <div class="p-2 bd-highlight">
+                            <img onClick={addMon} className="rounded mon" width={120} height={160} src={item['img']} alt="" />
+                            <span>{item.ten}</span>
+                        </div>
+            )
+            tdata_topping = tp.map( item =>
+                        <div class="p-2 bd-highlight">
+                            <img className="rounded mon" width={120} height={160} src={item['img']} alt="" />
+                            <span>{addTopping}</span>
+                        </div>
+            )
+    }
+
 
     return(
         <div id="order">
             <div className="row m-3 main_order">
-                <div data-spy="scroll" className="col-sm-5 payment overflow-scroll m-2">
-                    <DataTable
-                        title="Món"
-                        striped
-                        columns={mon}
-                        data={data_mon}
-                    />
-                    <div className="border-top border-secondary border-3 mt-5"></div>
-                    <DataTable
-                        title="Topping"
-                        columns={topping}
-                        data={data_topping}
-                    />
+                <div data-spy="scroll" className="col-sm-4 payment overflow-scroll m-2">
+                    <div className="h3">Món</div>
+                    <div className="">
+                        món
+                    </div>
+                    <div className="h3 border-top border-3 mt-2">Topping</div>
+                    <div className=" border-3">
+                        topping
+                    </div>
                 </div>
                 <div className="col-sm m-2 gx-0">
-                    <span className="font-monospace fs-3 text-dark">Menu</span>
-                    <div data-spy="scroll" className=" menu_show row p-0 m-2">
-                        <div className="col-lg-3 p-0 col-sm-12 mb-4 mb-lg-0">
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    A
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    A
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    A
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    A
-                                </div>
+                    <div className="row">
+                        <div className="col">
+                            <span className=" text-dark h1">Menu</span>
+                            <div data-spy="scroll" className="p-0 d-flex flex-row bd-highlight mb-3">
+                                {tdata_mon}
                             </div>
                         </div>
-                        <div className="col-lg-3 p-0 col-sm-12 mb-4 mb-lg-0">
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    B
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    B
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    B
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    B
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 p-0 col-sm-12 mb-4 mb-lg-0">
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    C
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    C
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    C
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    C
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 p-0 col-sm-12 mb-4 mb-lg-0">
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    D
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    D
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    D
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    D
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    D
-                                </div>
-                            </div>
-                            <div>
-                                <div className="order_img">
-                                    <img src={image} alt="" />
-                                </div>
-                                <div className="order_img_name">
-                                    D
-                                </div>
+                        <div className="col border-start">
+                            <span className=" text-dark h1">Topping</span>
+                            <div data-spy="scroll" className="p-0 d-flex flex-row bd-highlight mb-3">
+                                {tdata_topping}
                             </div>
                         </div>
                     </div>
@@ -285,7 +116,7 @@ function Order(){
                     </form>
                 </div>
                 <div className=" col-sm button_payment text-end">
-                    <button className="bt btn rounded-1">Thanh Toán</button>
+                    <button className="bt btn rounded-1">Hoàn tất</button>
                 </div>
             </div>
         </div>

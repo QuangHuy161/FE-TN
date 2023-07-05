@@ -1,5 +1,15 @@
+
 #order{
+    background-color: rgb(247 247 247);
+    margin: 0 !important;
+    height: 100vh;
     .main_order{
+        >div{
+            background-color: white;
+            margin: 1.5em;
+        }
+        
+        //background-color: white;
         .payment{
             height: 60vh;
             .mon{
@@ -49,4 +59,8 @@
             border-radius: 2px;
         }
     }
+}
+
+.mon{
+    cursor: pointer;
 }

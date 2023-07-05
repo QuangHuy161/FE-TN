@@ -20,4 +20,13 @@ function removeAccents(str) {
       str = str.replace(re, char);
     }
     return  str.toLowerCase();
+}
+function genID(str){
+  let t='';
+  const s = str.toLowerCase();
+  for (var i =0; i < str.length; i ++){
+      t+=s.charCodeAt(i);
   }
+  return t;
+}
+  export  {removeAccents,genID}

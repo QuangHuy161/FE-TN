@@ -18,21 +18,18 @@ function Donvi() {
     const [list,setList] = useState({head:[],data:[]});
 
     useEffect(() => {
-        async function FetchData (){
-            await Axios({
-                        method: 'get',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        url: 'http://localhost:5000/donvi',
-                    }).then(function (response) {
-                        let head=Object.keys(response.data[0])
-                        head.pop()
-                        let data=response.data;
-                        setList({head:head,data:data})
-                    });
-    
-            
-        }
-        FetchData();
+
+        setTimeout( async () =>{
+            let DV= await Axios({
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: 'http://localhost:5000/donvi',
+            })
+            let head=Object.keys(DV.data[0]);
+            head.pop();
+            let data=DV.data;
+            setList({head:head,data:data})
+        },1000)
         return ;
     },[]);
     const handleSubmit = (e) => {

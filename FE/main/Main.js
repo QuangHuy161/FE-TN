@@ -5,6 +5,7 @@ import React, { useState } from "react"
 import Donvi from "./Supplies/Donvi";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Nhomvattu from "./Supplies/Nhomvattu";
+import Mon from "./Supplies/Mon";
 function Main(props ){
 
     let [pageMode, setPageMode] = useState("vattu")
@@ -20,28 +21,43 @@ function Main(props ){
                 <div className="row m-1">
                     <Dropdown className="bt btn btn-menu rounded-1">
                         <Dropdown.Toggle
-                        className=" text-wrap"
+                        className="text-wrap"
                         style={{
-                            background:'transparent',
                             border: 'none',
                             color:'black',
-                            width: '100%',
+                            background:'transparent',
                         }}>
                             <span>
-                                Thêm đơn vị & Loại
+                                Thống kê vật tư
                             </span>
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
+                        <Dropdown.Menu
+                        style={{
+                            background:'rgb(152, 221, 198)',
+                            border: 'none',
+                            color:'black',
+                            borderRadius:'5px',
+                            boxShadow: '0 0 12px rgb(45, 66, 59)'
+                        }}
+                        >
                             <Dropdown.Item
+                            className="bt"
                             onClick={() => setPageMode("donvi")}
                             >
                                 Đơn vị
                             </Dropdown.Item>
                             
                             <Dropdown.Item
+                            className="bt"
                             onClick={() => setPageMode("nhomvattu")}
                             >
                                 Nhóm vật tư
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                            className="bt"
+                            onClick={() => setPageMode("mon")}
+                            >
+                                Món
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -72,7 +88,7 @@ function Main(props ){
             </div>
             <div className="row">
                 {t}
-                <div className="col">
+                <div className="col col-sm">
                     <Supplies/>
                 </div>
             </div>
@@ -87,7 +103,7 @@ function Main(props ){
                 </div>
                 <div className="row">
                     {t}
-                    <div className="col">
+                    <div className="col col-sm">
                         <Staff/>
                     </div>
                 </div>
@@ -102,7 +118,7 @@ function Main(props ){
             </div>
             <div className="row">
                 {t}
-                <div className="col">
+                <div className="col col-sm">
                     <Donvi/>
                 </div>
             </div>
@@ -117,8 +133,22 @@ function Main(props ){
             </div>
             <div className="row">
                 {t}
-                <div className="col">
+                <div className="col col-sm">
                     <Nhomvattu/>
+                </div>
+            </div>
+        </div>
+    )
+    if(pageMode==='mon')
+    return(
+        <div  className="container-xl">
+            <div className="row">
+                <Top/>
+            </div>
+            <div className="row">
+                {t}
+                <div className="col col-sm">
+                    <Mon/>
                 </div>
             </div>
         </div>

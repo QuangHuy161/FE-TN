@@ -18,21 +18,17 @@ function Nhomvattu() {
     const [list,setList] = useState({head:[],data:[]});
 
     useEffect(() => {
-        async function FetchData (){
-            await Axios({
-                        method: 'get',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        url: 'http://localhost:5000/nhomvattu',
-                    }).then(function (response) {
-                        let head=Object.keys(response.data[0])
-                        head.pop()
-                        let data=response.data;
-                        setList({head:head,data:data})
-                    });
-    
-            
-        }
-        FetchData();
+        setTimeout( async () =>{
+            let NVT= await Axios({
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: 'http://localhost:5000/nhomvattu',
+            })
+            let head=Object.keys(NVT.data[0]);
+            head.pop();
+            let data=NVT.data;
+            setList({head:head,data:data})
+        },1000)
         return ;
     },[]);
     const handleSubmit = (e) => {
