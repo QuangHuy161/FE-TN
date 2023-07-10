@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import Axios from "axios"
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
 
@@ -58,16 +58,27 @@ function List_mon() {
         nguyenlieu:[]
     })
     const [list,setList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
         setTimeout( async () =>{
-            let DV= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/mon',
-            })
-            setList(DV.data)
+
+            setIsLoading(true);
+            try {
+                let DV= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/mon',
+                })
+                setList(DV.data)
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+            
+            
         },1000)
         return ;
     },[]);
@@ -129,6 +140,13 @@ function List_mon() {
         )
     }
 
+
+    if(isLoading)
+    return(
+        <>
+            <LoadingSpinner/>
+        </>
+    )
     return (
         <div>
             <ShowTable/>

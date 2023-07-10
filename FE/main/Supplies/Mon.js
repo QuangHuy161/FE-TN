@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import Axios from "axios"
 import LIST_MON from "./List_mon";
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 
 function Mon(){
@@ -18,37 +19,47 @@ function Mon(){
     })
     const [MON,setMON]= useState([])
     const [NGUYENLIEU,setNGUYENLIEU]= useState([])
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        setTimeout(async () =>{
-            let L_M= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/list_mon',
-            })
 
-            let m = [];
-            let nl = [];
-            L_M.data.map((items) =>{
-                if( items.nhomvattu ==="Món" )
-                m.push(items)
-                else
-                if(items.nhomvattu ==="Nguyên liệu tổng hợp")
-                {
-                    m.push(items)
-                    nl.push(items)
-                }
-                else{
-                    nl.push(items)
-                }
+        setIsLoading(true);
+            try {
+                setTimeout(async () =>{
+                    let L_M= await Axios({
+                        method: 'get',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: 'http://localhost:5000/list_mon',
+                    })
+        
+                    let m = [];
+                    let nl = [];
+                    L_M.data.map((items) =>{
+                        if( items.nhomvattu ==="Món" )
+                        m.push(items)
+                        else
+                        if(items.nhomvattu ==="Nguyên liệu tổng hợp")
+                        {
+                            m.push(items)
+                            nl.push(items)
+                        }
+                        else{
+                            nl.push(items)
+                        }
+                        
+                    })
+                    setMON(m);
+                    setMon({...mon, tenmon : m[0].ten})
+                    setNGUYENLIEU(nl); 
+                    //console.log(nl[0].ten)
+                    setNguyenlieu({...nguyenlieu, ten:nl[0].ten}); 
+                },1000)
                 
-            })
-            setMON(m);
-            setMon({...mon, tenmon : m[0].ten})
-            setNGUYENLIEU(nl); 
-            //console.log(nl[0].ten)
-            setNguyenlieu({...nguyenlieu, ten:nl[0].ten}); 
-        },1000)
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
         
         return ;
     },[]);
@@ -126,6 +137,11 @@ function Mon(){
             </div>
         )
     }
+
+    if(isLoading)
+    return(
+        <LoadingSpinner/>
+    )
 
     return(
         <div> 

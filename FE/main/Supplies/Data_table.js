@@ -21,36 +21,40 @@ function DATA_TABLE({title,head,label,data}){
 
     useEffect( ()=>{
         
-        setIsLoading(false);
-
         setTimeout(async () => {
-            let DV= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/donvi',
-            })
-            let NVT= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/nhomvattu',
-            })
+            setIsLoading(true);
+            try {
+                let DV= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/donvi',
+                })
+                let NVT= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/nhomvattu',
+                })
+    
+                setTableData(data);
+                
+                let arr_dv=[];
+                DV.data.map(item => {
+                    arr_dv.push(item.ten);
+                })
+                setDONVI(arr_dv)
+    
+                let arr_nvt=[];
+                NVT.data.map(item => {
+                    arr_nvt.push(item.ten);
+                })
+                setNHOMVATTU(arr_nvt)
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
 
-            setTableData(data);
             
-            let arr_dv=[];
-            DV.data.map(item => {
-                arr_dv.push(item.ten);
-            })
-            setDONVI(arr_dv)
-
-            let arr_nvt=[];
-            NVT.data.map(item => {
-                arr_nvt.push(item.ten);
-            })
-            setNHOMVATTU(arr_nvt)
-            
-            
-
         },1000)
 
     },[data])
