@@ -3,6 +3,8 @@ import Axios from "axios"
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import ClearIcon from '@mui/icons-material/Clear';
+
 Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
 
@@ -21,6 +23,7 @@ function MyVerticallyCenteredModal(props) {
                             <td key={i}>{item[i]}</td>
                         )
                     }
+                    
                 </tr>
             )
         }
@@ -51,33 +54,19 @@ function MyVerticallyCenteredModal(props) {
     );
   }
 
-function List_mon() {
+function List_mon({data}) {
     const [modalShow, setModalShow] = useState(false);
     const [dataModal,setDataModal] =useState({
         tenmon:'',
         nguyenlieu:[]
     })
     const [list,setList] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
 
         setTimeout( async () =>{
 
-            setIsLoading(true);
-            try {
-                let DV= await Axios({
-                    method: 'get',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    url: 'http://localhost:5000/mon',
-                })
-                setList(DV.data)
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
-            
+            setList(data)
             
         },1000)
         return ;
@@ -94,8 +83,23 @@ function List_mon() {
         setModalShow(true)
         
     }
+
+    function delNL(i){
+        if(
+            window.confirm("BẠN CHẮC CHẮN MUỐN XÓA CÔNG THỨC CỦA MÓN NÀY \n NẾU XÓA SẼ KHÔNG THỂ THỐNG KÊ HAO HỤT CỦA NGUYÊN LIỆU?")
+        ){
+            const id =list[i]._id
+            list.splice(i,1)
+            setList([...list])
+            Axios({
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: `http://localhost:5000/delete/mon/${id}`,
+            });
+        }
+    }
     function ShowTable(){
-        let head=["STT","Tên món"]
+        let head=["STT","Tên món","Xóa"]
         let data=list
 
 
@@ -105,18 +109,21 @@ function List_mon() {
         let tdata;
         if(data[0]=== undefined) 
         tdata=
-            <tr key="0">
-                <td></td>
-            </tr>
+            <>
+            </>
         else{
              tdata = data.map( (item,index) =>
                 <tr >
                     <td>{index}</td>
                     <td className="pe" in={index }onClick={handleClick}>{item.tenmon}</td>
+                    <td>
+                        <span className="pe link-danger" onClick={()=>delNL(index)}><ClearIcon/></span>
+                    </td>
                 </tr>
             )
         }
             
+        
         return (
             <div>
                 <h1 className="h1">Danh sách và công thức món</h1>
@@ -141,12 +148,6 @@ function List_mon() {
     }
 
 
-    if(isLoading)
-    return(
-        <>
-            <LoadingSpinner/>
-        </>
-    )
     return (
         <div>
             <ShowTable/>

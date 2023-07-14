@@ -6,6 +6,7 @@ import Donvi from "./Supplies/Donvi";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Nhomvattu from "./Supplies/Nhomvattu";
 import Mon from "./Supplies/Mon";
+import Statis from "./Statis/Statis";
 function Main(props ){
 
     let [pageMode, setPageMode] = useState("vattu")
@@ -78,6 +79,13 @@ function Main(props ){
                         </span>
                     </button>
                 </div>
+                <div className="row m-1">
+                    <button  className=" bt btn btn-menu rounded-1" onClick={() => setPageMode("thongke")} >
+                        <span className="nav-link"  >
+                        Thống kê
+                        </span>
+                    </button>
+                </div>
             </div>
         )
     if(pageMode==='vattu')
@@ -94,6 +102,20 @@ function Main(props ){
             </div>
         </div>
     )
+    if(pageMode==='thongke')
+        return(
+            <div  className="container-xl">
+                <div className="row">
+                    <Top/>
+                </div>
+                <div className="row">
+                    {t}
+                    <div className="col col-sm">
+                        <Statis/>
+                    </div>
+                </div>
+            </div>
+        )
 
     if(pageMode==='nhanvien')
         return(

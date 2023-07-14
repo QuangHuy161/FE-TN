@@ -2,6 +2,8 @@ import "./Order.scss"
 import React, { useState,useEffect } from 'react';
 import Axios from "axios"
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import ClearIcon from '@mui/icons-material/Clear';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 function Order(){
 
     const [ind,setInd] =useState();
@@ -47,25 +49,29 @@ function Order(){
         t.tenmon= e.target.innerText
         t.gia=Number(e.target.nextSibling.innerHTML)
         order.push(t)
+        setOrder([...order])
     }
     
     const addTopping= (e) =>{
         e.preventDefault();
         
         if(order.length=== 0) return;
-        let top ={
+        let topp ={
             ten:"",
             gia:0
         }
-        top.ten= e.target.innerText;
-        top.gia= Number(e.target.nextSibling.innerHTML)
+        topp.ten= e.target.innerText;
+        topp.gia= Number(e.target.nextSibling.innerHTML)
 
-        order.at(ind).topping.push(top)
+        order.at(ind).topping.push(topp)
+        setOrder([...order])
     }
 
     const choosedMon =(e) =>{
         e.preventDefault();
-        console.log(ind)
+        console.log(e.target.classList)
+        if(e!==undefined || e!==null)
+        //e.target.classList.toggle("active_item");
         setInd(Number(e.target.attributes["data"].value))
     }
     
@@ -73,20 +79,17 @@ function Order(){
         
         if(order.length===0 ) return <div className="price">0</div>;
         let sum = 0;
-        const cal = ()=>{
-            for (let index = 0; index < order.length; index++) {
-                const element = order[index];
-                for (let j = 0; j < element.topping.length; j++) {
-                    const e = element.topping[j];
-                    sum+=e.gia
-                }
-                sum+=element.gia
+        for (let index = 0; index < order.length; index++) {
+            const element = order[index];
+            for (let j = 0; j < element.topping.length; j++) {
+                const e = element.topping[j];
+                sum+=e.gia
             }
-            setPrice(sum)
-            return <>{sum}</>;
+            sum+=element.gia
         }
+        setPrice(sum)
         return<div className="price">
-            {cal()}
+            {price}
         </div>;
     }
 
@@ -124,37 +127,63 @@ function Order(){
         )
     }
 
+    function delTopp(i){
+        order.at(ind).topping.splice(i, 1)
+        setOrder([...order])
+    }
+    function delMon(i){
+        order.splice(i, 1)
+        setOrder([...order])
+       // console.log(order)
+    }
     function LoadOrder(){
+
+        const LoadTopping = ({topp}) =>{
+            if( topp.length === 0) return <></>
+            let t = topp.map( (item,i) => <tr key={item.ten + i} className="text-end">
+                <td >{item.ten}</td>
+                <td >{item.gia}</td>
+                <span className="pe link-danger" onClick={()=>delTopp(i)}><ClearIcon/></span>
+            </tr>)
+
+            return <table className="w-100">{t}</table>
+        }
         
         if (order[0]===undefined|| order[0]===null)
         return (<></>)
-        let key = Object.keys(order[0])
         let t = 
         order.map((item,index) =>
-            <tr className=" h5" onClick={choosedMon}>
-                    <td className="pe" data={index}> {item["tenmon"] }</td>
-                    <td> {item["gia"] }</td>
+            <tr key={item.tenmon + index} className="border-bottom ">
+                <tr className="h5" key={item.tenmon} onClick={choosedMon}>
+                        <td className={`pe ${index === ind ? "active_item" : ""}`} data={index}> {item.tenmon }</td>
+                        <td className=""> {item.gia }</td>
+                        <span className="pe link-danger" onClick={()=>delMon(index)}><DeleteForeverIcon/></span>
+                </tr>
+                <LoadTopping
+                topp={item.topping}/>
             </tr>
         )
         
         return(
-            <>
-                <table className="table" 
-                >
+            <div style={{
+                height:"50vh",
+                overflowY:"scroll"
+                }}>
+                <table className="w-100">
                     <tbody>
                         {t}
                     </tbody>
                 </table>
 
                 
-            </>
+            </div>
         )
     }
 
-    function checknumber(inputtxt)
+    function checknumber(phoneNum)
     {
     var phoneno = /^\d{10}$/;
-    if(inputtxt.match(phoneno)){
+    if(phoneNum.match(phoneno)){
         return true;
     }
     else{
@@ -165,7 +194,7 @@ function Order(){
 
     const [order_info,setOrder_info]= useState({
         tenkhachhang:"",
-        sdt:"",
+        sdt:"0123456789",
         tiendua:0,
         gia:0,
         tienthoi:0,
@@ -177,6 +206,12 @@ function Order(){
         e.preventDefault();
 
         if(order.length===0) return;
+
+        if(order_info.tenkhachhang ==="" || order_info.tenkhachhang ===null)
+        {
+            alert("Vui lòng nhập tên khách hàng")
+            return
+        }
 
         if(order_info.tiendua < price )
         {
@@ -193,24 +228,57 @@ function Order(){
         order_info.time=new Date();
 
         setOrder_info({...order_info,order:order})
-        if(localStorage.getItem("orde(r_info")===undefined
-            || localStorage.getItem("order_info")===null){
-            localStorage.setItem("order_info",JSON.stringify(order_info));
+        //CHECK OFFLINE +++++++++++++++++++
+        if(navigator.onLine){
+            if(localStorage.getItem("order_info")!==null){
+                let arr= [];
+                let t = JSON.parse(localStorage.getItem("order_info"))
+                if(t.length ===undefined){
+                    Axios.post("http://localhost:5000/add_order_detail",
+                        JSON.parse(localStorage.getItem("order_info"))
+                    )
+                    localStorage.removeItem("order_info")
+                }
+                else{
+                    arr= JSON.parse(localStorage.getItem("order_info"))
+                    for (let index = 0; index < arr.length; index++) {
+                        const element = arr[index];
+                        Axios.post("http://localhost:5000/add_order_detail",
+                            element
+                        )
+                    }
+                    localStorage.removeItem("order_info")
+                }
+            }
+            Axios.post("http://localhost:5000/add_order_detail",
+                order_info
+            )
         }
         else{
-            let arr= [];
-            let t = JSON.parse(localStorage.getItem("order_info"))
-            if(t.length ===undefined){
-                arr.push(JSON.parse(localStorage.getItem("order_info")))
-                arr.push((order_info))
-                localStorage.setItem("order_info",JSON.stringify(arr));
+            if(localStorage.getItem("order_info")===undefined
+                || localStorage.getItem("order_info")===null){
+                localStorage.setItem("order_info",JSON.stringify(order_info));
             }
             else{
-                arr= JSON.parse(localStorage.getItem("order_info"))
-                arr.push(order_info)
-                localStorage.setItem("order_info",JSON.stringify(arr));
+                let arr= [];
+                let t = JSON.parse(localStorage.getItem("order_info"))
+                if(t.length ===undefined){
+                    arr.push(JSON.parse(localStorage.getItem("order_info")))
+                    arr.push((order_info))
+                    localStorage.setItem("order_info",JSON.stringify(arr));
+                }
+                else{
+                    arr= JSON.parse(localStorage.getItem("order_info"))
+                    arr.push(order_info)
+                    localStorage.setItem("order_info",JSON.stringify(arr));
+                }
             }
         }
+        alert("Đã tạo đơn hàng")
+        //RESET
+        setInd(null)
+        setPrice(0)
+        setOrder([])
     }
 
     if (isLoading) {
@@ -252,7 +320,7 @@ function Order(){
                             </div>
                             <input type="text" className="" 
                             onChange={(e) =>setOrder_info({...order_info,tenkhachhang:e.target.value})}
-                            aria-describedby="order_ten"/>
+                            aria-describedby="order_ten" />
                         </div>
 
                         <div className="input-group mb-1">
@@ -262,8 +330,7 @@ function Order(){
                             <input type="Number" className=""  
                             onChange={(e) =>{
                                     setOrder_info({...order_info,sdt:e.target.value});
-                               
-                            }}                            
+                            }}   
                             aria-describedby="order_sdt"/>
                         </div>
                        
@@ -273,9 +340,7 @@ function Order(){
                             </div>
                             <input type="Number" className="" 
                             onChange={(e) =>{
-                                
                                     setOrder_info({...order_info,tiendua:e.target.value * 1000})
-                            
                             }}
                             aria-label="Amount (to the nearest dollar)"/>
                             <div className="input-group-append">
