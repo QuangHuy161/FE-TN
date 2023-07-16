@@ -5,13 +5,29 @@ const Type = require("./models/typeModel");
 const Material =require("./models/materialModel");
 const User = require ("./models/userModel")
 const Mon = require("./models/monModel")
+const Order= require("./models/OrderDetailModel")
 const bcrypt = require("bcrypt");
 var bodyParser = require('body-parser');
 
 const app = express();
 
+
+//MIDDLEWARE
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+app.options("/update/list_mon", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.sendStatus(204);
+});
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+app.get('/' ,(req,res) =>{
+})
 
 var options = {
   useNewUrlParser: true,
@@ -43,25 +59,14 @@ const closeConnection = module.exports = () =>{
 }
 
 
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
-app.options("/update/list_mon", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.sendStatus(204);
-});
-app.use(cors({
-  origin: 'http://localhost:3000'
-}));
-app.get('/' ,(req,res) =>{
-})
+
 
 databaseConnection()
 const Donvi = mongoose.model("Donvi",Type)
 const Nhomvattu = mongoose.model("Nhomvattu",Type)
 const Vattu = mongoose.model("Material",Material)
 const Monan = mongoose.model("Mon",Mon)
+const OrderDetail = mongoose.model("Order",Order)
 
 app.get('/donvi' ,(req,res) =>{
   
@@ -156,7 +161,7 @@ app.post('/add_nhomvattu', async (req,res) => {
 app.get('/list_mon',(req,res) =>{
   
   res.header("Access-Control-Allow-Origin", "*");
-  const Nguyenlieu = Vattu.find({}).then(items => {
+  const Nguyenlieu = Vattu.find({}).sort({nhomvattu:-1}).then(items => {
       res.json(items)
   }).then(function(){
     // Success
@@ -165,6 +170,20 @@ app.get('/list_mon',(req,res) =>{
  });
   
 })
+
+app.get('/list_nguyenlieu',(req,res) =>{
+  
+  res.header("Access-Control-Allow-Origin", "*");
+  const Nguyenlieu = Vattu.find({nhomvattu:{$in:["Nguyên Liệu","Nguyên liệu tổng hợp"]}}).sort({ten:-1}).then(items => {
+      res.json(items)
+  }).then(function(){
+    // Success
+ }).catch(function(error){
+     console.log(error); // Failure
+ });
+  
+})
+
 app.get('/list_mon/:_id',(req,res) =>{
   
   res.header("Access-Control-Allow-Origin", "*");
@@ -205,17 +224,17 @@ app.post('/delete/list_mon/:_id',(req,res) =>{
   }).catch(function(error){
       console.log(error); // Failure
   });
-  
 })
 
 app.post('/themmon', (req,res) =>{
   res.header("Access-Control-Allow-Origin", "*");
+  console.log(req.body)
   let mon = new Monan(req.body)
   mon.save()
 })
 app.get('/mon', (req,res) =>{
   res.header("Access-Control-Allow-Origin", "*");
-  const mon = Monan.find({}).then(items => {
+  const mon = Monan.find({}).sort({tenmon:1}).then(items => {
     res.json(items)
 }).then(function(){
   // Success
@@ -223,7 +242,21 @@ app.get('/mon', (req,res) =>{
    console.log(error); // Failure
 });
 })
+app.post('/delete/mon/:_id',(req,res) =>{
+  res.header("Access-Control-Allow-Origin", "*");
+  var myQuerry = {_id:req.params._id};
+  Monan.deleteOne(myQuerry).then(function(){
+    res.send({status:"deleted"}); // Success
+  }).catch(function(error){
+      console.log(error); // Failure
+  });
+})
 
+app.post('/add_order_detail', (req,res) =>{
+  res.header("Access-Control-Allow-Origin", "*");
+  const order = new OrderDetail(req.body)
+  order.save()
+})
 
 app.get('/menu', (req,res) =>{
   res.header("Access-Control-Allow-Origin", "*");
@@ -238,6 +271,42 @@ app.get('/menu', (req,res) =>{
 })
 
 
+app.get("/filter_order/:t",(req,res)  =>{
+  res.header("Access-Control-Allow-Origin", "*");
+  let space ="_"
+  let index = req.params.t.indexOf(space);
+   
+  let time_start= req.params.t.slice(0,index)
+  let time_end= req.params.t.slice(index+1,req.params.t.length)
+  const order = OrderDetail.find(
+    {
+      time:
+      {$gte: time_start , $lte:time_end}
+    }
+    ).sort({time:1}).then(items => {
+      res.json(items)
+  }).catch(function(error){
+      console.log(error); 
+  });
+})
+app.get("/filter_order/day/:t",(req,res)  =>{
+  res.header("Access-Control-Allow-Origin", "*");
+  let space ="_"
+  let index = req.params.t.indexOf(space);
+   
+  let time_start= req.params.t.slice(0,index)
+  let time_end= req.params.t.slice(index+1,req.params.t.length)
+  const order = OrderDetail.find(
+    {
+      time:
+      {$gte: time_start , $lt:time_end}
+    }
+    ).sort({time:1}).then(items => {
+      res.json(items)
+  }).catch(function(error){
+      console.log(error); 
+  });
+})
 app.post('/auth/signup', (req,res) =>{
   
   res.header("Access-Control-Allow-Origin", "*");
