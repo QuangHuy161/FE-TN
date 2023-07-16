@@ -7,7 +7,8 @@ const materialSchema = mongoose.Schema(
         nhomvattu:String,
         img:String,
         soluong:Number,
-        tien:Number
+        tien:Number,
+        time:Date
     }
 )
 
