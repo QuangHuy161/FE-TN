@@ -76,7 +76,9 @@ function Mon(){
     
     let mon_option= MON
     .map(item => 
-            <option key={item._id} value={item.ten} >{item.ten}</option>
+            <option key={item._id} value={item.ten} >
+                |{item.nhomvattu}| {item.ten} ({item.soluong} {item.donvi})
+                </option>
         )
 
     let nguyenlieu_option= NGUYENLIEU
@@ -86,7 +88,7 @@ function Mon(){
         data_loai={item.nhomvattu} 
         value={item.ten} 
         >
-            {item.ten} ( {item.donvi})</option>
+         |{item.nhomvattu}| {item.ten} ({item.soluong} {item.donvi})</option>
         )
   
     const handleAdd = (e )=>{
@@ -103,11 +105,10 @@ function Mon(){
             nguyenlieu:mon.nguyenlieu
         }
         try {
-            Axios.post('http://localhost:5000/themmon', {body})
+            Axios.post('http://localhost:5000/themmon', body)
         } catch (error) {
             console.error(error);
         } finally {
-            
             mon_ct.push(body)
             setMon_ct([...mon_ct])
             alert(`đã thêm món ${mon.tenmon}`)
@@ -171,7 +172,7 @@ function Mon(){
     if(isLoading)
     return(
         <div> 
-            <div className="col-lg">
+            <div className="container col-lg">
             <form id="form_data " className="container row" onSubmit={handleAdd}>
                 <LoadingSpinner/> 
                 <button className="bt btn mb-3" onClick={handleAdd}> 
@@ -188,7 +189,7 @@ function Mon(){
 
     return(
         <div> 
-            <div className="col-lg">
+            <div className="container col-lg">
             <form id="form_data " className="container row" onSubmit={handleAdd}>
                 <div className="col">
                 

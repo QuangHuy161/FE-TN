@@ -84,7 +84,7 @@ function List_mon({data}) {
         
     }
 
-    function delNL(i){
+    function delCT(i){
         if(
             window.confirm("BẠN CHẮC CHẮN MUỐN XÓA CÔNG THỨC CỦA MÓN NÀY \n NẾU XÓA SẼ KHÔNG THỂ THỐNG KÊ HAO HỤT CỦA NGUYÊN LIỆU?")
         ){
@@ -117,7 +117,7 @@ function List_mon({data}) {
                     <td>{index}</td>
                     <td className="pe text-start" in={index }onClick={handleClick}>{item.tenmon}</td>
                     <td>
-                        <span className="pe link-danger" onClick={()=>delNL(index)}><ClearIcon/></span>
+                        <span className="pe link-danger" onClick={()=>delCT(index)}><ClearIcon/></span>
                     </td>
                 </tr>
             )
@@ -149,7 +149,7 @@ function List_mon({data}) {
 
 
     return (
-        <div>
+        <div className='container'>
             <ShowTable/>
         </div>
     );

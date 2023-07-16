@@ -1,6 +1,7 @@
 import DATA_TABLE from "./Data_table";
 import React, { useState,useEffect } from 'react';
 import Axios from "axios"
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 // import {genID} from "../function/function";
 
 Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
@@ -16,7 +17,7 @@ function Supplies(){
     })
     
     const [list,setList] = useState({head:[],data:[]});
-    
+    const [isLoading, setIsLoading] = useState(false);
     const [DONVI,setDONVI]= useState([])
     const [NHOMVATTU,setNHOMVATTU]= useState([])
 
@@ -32,29 +33,37 @@ function Supplies(){
     }
     useEffect(() => {
         setTimeout( async() =>{
-            let DV= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/donvi',
-            })
-
-            let NVT= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/nhomvattu',
-            })
-            let L_M= await Axios({
-                method: 'get',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                url: 'http://localhost:5000/list_mon',
-            })
-
-
-            setDONVI(DV.data)
-            setNHOMVATTU(NVT.data)
-            let head=Object.keys(L_M.data[4]);
-            head.pop();
-            setList({head:head,data:L_M.data})
+            setIsLoading(true);
+            try {
+                let DV= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/donvi',
+                })
+    
+                let NVT= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/nhomvattu',
+                })
+                let L_M= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/list_mon',
+                })
+    
+    
+                setDONVI(DV.data)
+                setNHOMVATTU(NVT.data)
+                let head=Object.keys(L_M.data[1]);
+                head.splice(head.indexOf("_v")-1,1);
+                setList({head:head,data:L_M.data})
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+            
             
         },1000)
         
@@ -78,8 +87,21 @@ function Supplies(){
         alert(`Đã thêm vật tư ${vatlieu.ten}`)
     }
         
+    if(isLoading)
     return(
-        <div className="col-lg">
+        <div className="container col-lg">
+            <LoadingSpinner/>
+            {<DATA_TABLE
+                title="Tổng hợp vật tư"
+                head= {["ID", "Tên", "Đơn vị", "Loại Vật tư", "Ảnh", " Số Lượng", "Tiền","Thời gian"]}
+                label= {list.head}
+                data = {list.data}
+            />}
+        </div>
+    );
+
+    return(
+        <div className="container col-lg">
             <form id="form_data" className="container" onSubmit={handleSubmit}>
                 <div className="row m-1">
                     <label className="text-start col-5"> Tên *</label>

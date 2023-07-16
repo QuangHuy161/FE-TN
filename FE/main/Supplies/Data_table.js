@@ -10,7 +10,6 @@ import {
   } from '@mui/material';
 
 function DATA_TABLE({title,head,label,data}){
-   
     // set the initial state
     const [isLoading, setIsLoading] = useState(true);
     let [tableData, setTableData] = useState([]);
@@ -36,7 +35,6 @@ function DATA_TABLE({title,head,label,data}){
                 })
     
                 setTableData(data);
-                
                 let arr_dv=[];
                 DV.data.map(item => {
                     arr_dv.push(item.ten);
@@ -134,6 +132,7 @@ function DATA_TABLE({title,head,label,data}){
         }
         else{
             let ID=values._id
+            values.time= new Date().toISOString();
             tableData[row.index] = values;
             //send/receive api updates here
             setTableData([...tableData]);

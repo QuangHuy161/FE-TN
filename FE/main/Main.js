@@ -90,7 +90,7 @@ function Main(props ){
         )
     if(pageMode==='vattu')
     return(
-        <div  className="container-xl">
+        <div  >
             <div className="row">
                 <Top/>
             </div>
@@ -104,7 +104,7 @@ function Main(props ){
     )
     if(pageMode==='thongke')
         return(
-            <div  className="container-xl">
+            <div  >
                 <div className="row">
                     <Top/>
                 </div>
@@ -119,7 +119,7 @@ function Main(props ){
 
     if(pageMode==='nhanvien')
         return(
-            <div  className="container-xl">
+            <div  >
                 <div className="row">
                     <Top/>
                 </div>
@@ -134,7 +134,7 @@ function Main(props ){
     
     if(pageMode==='donvi')
     return(
-        <div  className="container-xl">
+        <div  >
             <div className="row">
                 <Top/>
             </div>
@@ -149,7 +149,7 @@ function Main(props ){
 
     if(pageMode==='nhomvattu')
     return(
-        <div  className="container-xl">
+        <div  >
             <div className="row">
                 <Top/>
             </div>
@@ -163,7 +163,7 @@ function Main(props ){
     )
     if(pageMode==='mon')
     return(
-        <div  className="container-xl">
+        <div  >
             <div className="row">
                 <Top/>
             </div>

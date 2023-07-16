@@ -125,7 +125,7 @@ function Static(){
     }
     
 
-    let tg= <>từ ngày {getDate(startDate)} đến trước ngày {getDate(endDate)}</>
+    let tg= <>từ ngày {getDate(startDate)} đến ngày {getDate(endDate)}</>
     
     if(pageStat==="doanhso")
     return(

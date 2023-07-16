@@ -10,6 +10,7 @@ function Order(){
     const [price,setPrice] =useState();
     const [order,setOrder] = useState([])
     const [MENU,setMENU]= useState([])
+    const [CT,setCT]= useState([])
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         setTimeout(async () =>{
@@ -18,9 +19,15 @@ function Order(){
                 let MN= await Axios({
                     method: 'get',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    url: 'http://localhost:5000/menu',
+                    url: 'http://localhost:5000/list_mon',
+                })
+                let ct= await Axios({
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: 'http://localhost:5000/mon',
                 })
                 setMENU(MN.data)
+                setCT(ct.data)
             } catch (error) {
                 console.error(error);
             } finally {
@@ -38,6 +45,14 @@ function Order(){
         return item.nhomvattu ==="Topping";
     }
     
+    function Cal_Out(order){
+        for (let index = 0; order < order.length; index++) {
+            console.log(1)
+            
+        }
+        return order;
+    }
+    
     const addMon= (e) =>{
         e.preventDefault();
         let t={
@@ -45,6 +60,7 @@ function Order(){
             topping:[],
             gia:0
         }
+        
         t.tenmon= e.target.innerText
         t.gia=Number(e.target.nextSibling.innerHTML)
         order.push(t)
@@ -54,26 +70,31 @@ function Order(){
     const addTopping= (e) =>{
         e.preventDefault();
         
+       
         if(order.length=== 0) return;
         let topp ={
             ten:"",
             gia:0
         }
         topp.ten= e.target.innerText;
+        console.log("--------------------")
+        console.log(order)
         topp.gia= Number(e.target.nextSibling.innerHTML)
 
         order.at(ind).topping.push(topp)
         setOrder([...order])
+
+        
     }
 
     const choosedMon =(e) =>{
         e.preventDefault();
-        console.log(e.target,e.target.classList)
         if(e!==undefined || e!==null)
         //e.target.classList.toggle("active_item");
         setInd(Number(e.target.attributes["data"].value))
     }
     
+   
     const SumPrice = () =>{
         
         if(order.length===0 ) return <div className="price">0</div>;
@@ -90,6 +111,7 @@ function Order(){
         return<div className="price">
             {price}
         </div>;
+        
     }
 
     
@@ -201,6 +223,8 @@ function Order(){
         time:''
     })
 
+    
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -252,6 +276,52 @@ function Order(){
             Axios.post("http://localhost:5000/add_order_detail",
                 order_info
             )
+
+            //CAL_OUT
+            order.forEach(element =>{
+                let mon = CT.filter(item => item.tenmon === element.tenmon)[0]
+                //console.log(mon)
+                //console.log("=============")
+    
+                mon.nguyenlieu.forEach(el1 => {
+                    //console.log(el1.ten,el1.donvi,el1.dinhluong)
+                    let t = MENU.filter(mn =>
+                         mn.ten===el1.ten && mn.nhomvattu===el1.loai
+                        )[0]
+                        t.soluong-=el1.dinhluong
+                        setMENU([...MENU])
+                        //console.log(t)
+                        Axios({
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: `http://localhost:5000/update/list_mon/${t._id}`,
+                            data:t
+                        });
+                })
+            
+                element.topping.forEach( el2 =>{
+                    let topp= CT.filter(item => item.tenmon === el2.ten)[0]
+                    console.log(topp)
+                    topp.nguyenlieu.forEach(el_l => {
+                        console.log(el_l.ten,el_l.loai,el_l.donvi,el_l.dinhluong)
+                        let t = MENU.filter(mn =>
+                             mn.ten===el_l.ten 
+                             && mn.nhomvattu===el_l.loai
+                            )[0]
+                            t.soluong-=el_l.dinhluong
+                            setMENU([...MENU])
+                            //console.log(t)
+                            Axios({
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                url: `http://localhost:5000/update/list_mon/${t._id}`,
+                                data:t
+                            });
+                    })
+    
+                })
+            })
+            
         }
         else{
             if(localStorage.getItem("order_info")===undefined
