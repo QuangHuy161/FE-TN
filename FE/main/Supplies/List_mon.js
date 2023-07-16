@@ -113,9 +113,9 @@ function List_mon({data}) {
             </>
         else{
              tdata = data.map( (item,index) =>
-                <tr >
+                <tr key={ index}>
                     <td>{index}</td>
-                    <td className="pe" in={index }onClick={handleClick}>{item.tenmon}</td>
+                    <td className="pe text-start" in={index }onClick={handleClick}>{item.tenmon}</td>
                     <td>
                         <span className="pe link-danger" onClick={()=>delNL(index)}><ClearIcon/></span>
                     </td>

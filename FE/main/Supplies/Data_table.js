@@ -63,7 +63,7 @@ function DATA_TABLE({title,head,label,data}){
     let columns= []
     for (let index = 0; index < label.length; index++) {
         let t={}
-        if(head[index]==="ID"||head[index]==="Ảnh"){
+        if(head[index]==="ID"||head[index]==="Ảnh"||head[index]==="Thời gian"){
             t = {
                 header: head[index],
                 accessorKey:label[index],

@@ -11,6 +11,7 @@ function Mon(){
             ten:'Nguyên liệu',
             donvi:'Kilogram',
             dinhluong:0,
+            loai:""
         }
     )
     const [mon,setMon] = useState({
@@ -80,9 +81,14 @@ function Mon(){
 
     let nguyenlieu_option= NGUYENLIEU
     .map( item => 
-        <option key={item._id} data={item.donvi} value={item.ten} >{item.ten} ( {item.donvi})</option>
+        <option key={item._id} 
+        data_donvi={item.donvi} 
+        data_loai={item.nhomvattu} 
+        value={item.ten} 
+        >
+            {item.ten} ( {item.donvi})</option>
         )
-
+  
     const handleAdd = (e )=>{
         e.preventDefault();
         mon.nguyenlieu.push(nguyenlieu)
@@ -119,7 +125,7 @@ function Mon(){
     }
     function ShowTable(){
         let title=mon.tenmon
-        let head=["Tên","Đơn vị","Định lượng"]
+        let head=["Tên","Đơn vị","Phân loại","Định lượng"]
         let data=mon.nguyenlieu
         let thead = head.map( item =>
             <th scope="col" key={item}>{item}</th>
@@ -201,16 +207,20 @@ function Mon(){
                     <div className="row m-1">
                         <label className="text-start col-5" >Nguyên liệu</label>
                         <select required className="col-7 border p-1 rounded-1" 
-                        onChange={ e => {
-                            let t ={
+                        onChange={ (e) =>{
+                                let t ={
                                 ten:e.target.value,
                                 donvi:e.target
                                 .options[e.target.selectedIndex]
-                                .attributes['data']
+                                .attributes['data_donvi']
+                                .value,
+                                loai:e.target
+                                .options[e.target.selectedIndex]
+                                .attributes['data_loai']
                                 .value,
                                 dinhluong:0,
                             }
-                            setNguyenlieu(t)
+                        setNguyenlieu(t)
                         }}
                         >
                             {nguyenlieu_option}

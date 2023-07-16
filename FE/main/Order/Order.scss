@@ -48,12 +48,19 @@
     .order_info{
         background-color: white;
         height: 20vh;
+        overflow-y: scroll;
         .input-group-prepend{
             width: 12vw;
         }
-        input[type="text"]{
+        input[type="text"],input[type="Number"]{
             border: 1px solid rgb(188, 188, 188);
             border-radius: 2px;
+        }
+        .place-ho{
+            height: 100%;
+            border: none;
+            background-color: #98ddc6;
+            border-radius: 0 5px 5px 0;
         }
     }
 }
@@ -74,7 +81,7 @@
             filter: brightness(0.78);
         }
         p.h4{  
-            margin: 5vh 0 !important;
+            padding: 6vh 0 !important;
             color: white;
             font-size: 1.1rem;
             position: absolute;

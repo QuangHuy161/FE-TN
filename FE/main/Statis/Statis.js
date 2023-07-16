@@ -3,11 +3,20 @@ import React, { useState } from "react"
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+
+function getDate(time){
+    let month = time.getUTCMonth() + 1
+    let day = time.getUTCDate()
+    let year = time.getUTCFullYear()
+    let Date = year + "-" + month + "-" + day
+    return Date;
+}
 function Static(){
     const [pageStat,setPageStat] = useState('doanhso');
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date('2023-07-09'));
     const [endDate, setEndDate] = useState(new Date());
     const [data,setData] =useState([])
+    const [revenue,setRevenue] =useState(0)
 
     let top_link=(
         <div className="row">
@@ -28,20 +37,79 @@ function Static(){
             </div>
         </div> 
     )
+    
 
+    function ShowOrder(){
+
+    }
+
+
+    function LoadOrder(){
+
+        const LoadTopping = ({topp}) =>{
+            if( topp.length === 0) return <></>
+            let t = topp.map( (item,i) => <tr key={item.ten + i} className="text-end">
+                <td >{item.ten}</td>
+                <td >{item.gia}</td>
+            </tr>)
+
+            return <table className="w-100">{t}</table>
+        }
+        
+        if (data[0]===undefined|| data[0]===null)
+        return (<></>)
+        
+        let key = Object.keys(data[0])
+        key.pop()
+        let t = data.map((item,index) =>
+            <tr data={index} key={index} className="border-bottom ">
+            {
+                key.map((el,i) =>
+                    <td key={i} data={el}> {(el!=='order') ? item[el]: 'order'}</td>
+                )
+            }
+            </tr>
+         )
+            
+        
+        return(
+            <div style={{
+                height:"50vh",
+                overflowY:"scroll"
+                }}>
+                <table className="w-100 border-1">
+                    <thead>
+                        <th>ID</th>
+                        <th>Tên khách</th>
+                        <th>SDT</th>
+                        <th>Tiền đưa</th>
+                        <th>Giá bill</th>
+                        <th>Tiền thối</th>
+                        <th>Đơn</th>
+                        <th>Thời gian</th>
+                    </thead>
+                    <tbody>
+                        {t}
+                    </tbody>
+                </table>
+
+                
+            </div>
+        )
+    }
+
+    const SumPrice = () =>{
+        let sum = 0
+        data.map(el => sum +=el.gia)
+        setRevenue(sum)
+        return<span className="text-danger price">
+            {sum}
+        </span>;
+    }
     const handleFilter = (e)=>{
         e.preventDefault();
-        let month_start = startDate.getUTCMonth() + 1
-        let day_start = startDate.getUTCDate() + 1
-        let year_start = startDate.getUTCFullYear()
-        let Date_start = year_start + "-" + month_start + "-" + day_start
-
-        let month_end = endDate.getUTCMonth() + 1
-        let day_end = endDate.getUTCDate() + 1
-        let year_end = endDate.getUTCFullYear()
-        let Date_end = year_end + "-" + month_end + "-" + day_end
-
-
+        let Date_start = getDate(startDate)
+        let Date_end = getDate(endDate)
         if(endDate<startDate)
         alert("Vui lòng chọn đúng mốc thời gian bắt đầu và kết thúc")
         else{
@@ -51,11 +119,13 @@ function Static(){
                 url: `http://localhost:5000/filter_order/${Date_start}_${Date_end}`,
             }).then((response) => 
                 setData(response.data)
-                
             )   
+            
         }
-        
     }
+    
+
+    let tg= <>từ ngày {getDate(startDate)} đến trước ngày {getDate(endDate)}</>
     
     if(pageStat==="doanhso")
     return(
@@ -88,7 +158,15 @@ function Static(){
                 >
                     Kết quả
                 </button>
+
+                
             </div>
+            <h4>Thống kê đơn hàng và doanh số</h4>
+            <h4>{tg}</h4>
+
+            
+            <LoadOrder/>
+            <h5> Doanh thu <SumPrice/> VND</h5>
         </div>
     )
     else

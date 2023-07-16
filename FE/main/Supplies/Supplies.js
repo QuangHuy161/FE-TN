@@ -52,8 +52,7 @@ function Supplies(){
 
             setDONVI(DV.data)
             setNHOMVATTU(NVT.data)
-            
-            let head=Object.keys(L_M.data[0]);
+            let head=Object.keys(L_M.data[4]);
             head.pop();
             setList({head:head,data:L_M.data})
             
@@ -73,7 +72,8 @@ function Supplies(){
             nhomvattu:vatlieu.nhomvattu,
             img: vatlieu.img,
             soluong: vatlieu.soluong,
-            tien:(vatlieu.soluong === 0 ?  vatlieu.tien : vatlieu.tien*vatlieu.soluong)
+            tien:(vatlieu.soluong === 0 ?  vatlieu.tien : vatlieu.tien*vatlieu.soluong),
+            time:new Date()
         })
         alert(`Đã thêm vật tư ${vatlieu.ten}`)
     }
@@ -132,7 +132,7 @@ function Supplies(){
             </form>
             {<DATA_TABLE
                 title="Tổng hợp vật tư"
-                head= {["ID", "Tên", "Đơn vị", "Loại Vật tư", "Ảnh", " Số Lượng", "Tiền"]}
+                head= {["ID", "Tên", "Đơn vị", "Loại Vật tư", "Ảnh", " Số Lượng", "Tiền","Thời gian"]}
                 label= {list.head}
                 data = {list.data}
             />}

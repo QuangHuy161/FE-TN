@@ -82,7 +82,7 @@ function Main(props ){
                 <div className="row m-1">
                     <button  className=" bt btn btn-menu rounded-1" onClick={() => setPageMode("thongke")} >
                         <span className="nav-link"  >
-                        Thống kê
+                        Thống kê bán hàng
                         </span>
                     </button>
                 </div>

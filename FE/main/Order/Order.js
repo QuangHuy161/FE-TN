@@ -40,7 +40,6 @@ function Order(){
     
     const addMon= (e) =>{
         e.preventDefault();
-        
         let t={
             tenmon:"",
             topping:[],
@@ -69,7 +68,7 @@ function Order(){
 
     const choosedMon =(e) =>{
         e.preventDefault();
-        console.log(e.target.classList)
+        console.log(e.target,e.target.classList)
         if(e!==undefined || e!==null)
         //e.target.classList.toggle("active_item");
         setInd(Number(e.target.attributes["data"].value))
@@ -312,22 +311,22 @@ function Order(){
 
             </div>
             <div className="row order_info fixed-bottom border-top border-3 border-success p-3">
-                <div className="col-sm text-start m-1">
+                <div className="col-sm-10 text-start m-1">
                     <form className="container m-0 info_order" >
                         <div className="input-group mb-1">
                             <div className="input-group-prepend">
-                                <span className="form_label" id="order_ten">Tên khách</span>
+                                <span className="form_label h6" id="order_ten">Tên khách</span>
                             </div>
-                            <input type="text" className="" 
+                            <input type="text" className="h5" 
                             onChange={(e) =>setOrder_info({...order_info,tenkhachhang:e.target.value})}
                             aria-describedby="order_ten" />
                         </div>
 
                         <div className="input-group mb-1">
                             <div className="input-group-prepend">
-                                <span className="form_label" id="order_sdt">Số điện thoại</span>
+                                <span className="form_label h6" id="order_sdt">Số điện thoại</span>
                             </div>
-                            <input type="Number" className=""  
+                            <input type="Number" className="h5"  
                             onChange={(e) =>{
                                     setOrder_info({...order_info,sdt:e.target.value});
                             }}   
@@ -336,15 +335,15 @@ function Order(){
                        
                         <div className="input-group mb-1">
                             <div className="input-group-prepend">
-                                <span className="form_label">Tiền khách đưa</span>
+                                <span className="form_label h6">Tiền khách đưa</span>
                             </div>
-                            <input type="Number" className="" 
+                            <input type="Number" className="h5" 
                             onChange={(e) =>{
                                     setOrder_info({...order_info,tiendua:e.target.value * 1000})
                             }}
                             aria-label="Amount (to the nearest dollar)"/>
                             <div className="input-group-append">
-                                <span className="input-group-text">.000 VND</span>
+                                <span className="input-group-text place-ho">.000 VND</span>
                             </div>
                         </div>
                        
@@ -387,22 +386,22 @@ function Order(){
 
             </div>
             <div className="row order_info fixed-bottom border-top border-3 border-success p-3">
-                <div className="col-sm text-start m-1">
+                <div className="col-sm-10 text-start m-1">
                     <form className="container m-0 info_order" >
                         <div className="input-group mb-1">
                             <div className="input-group-prepend">
-                                <span className="form_label" id="order_ten">Tên khách</span>
+                                <span className="form_label h6" id="order_ten">Tên khách</span>
                             </div>
-                            <input type="text" className="" 
+                            <input type="text" className="h5" 
                             onChange={(e) =>setOrder_info({...order_info,tenkhachhang:e.target.value})}
                             aria-describedby="order_ten"/>
                         </div>
 
                         <div className="input-group mb-1">
                             <div className="input-group-prepend">
-                                <span className="form_label" id="order_sdt">Số điện thoại</span>
+                                <span className="form_label h6" id="order_sdt">Số điện thoại</span>
                             </div>
-                            <input type="Number" className=""  
+                            <input type="Number" className="h5"  
                             onChange={(e) =>{
                                     setOrder_info({...order_info,sdt:e.target.value});
                                 
@@ -412,13 +411,13 @@ function Order(){
                        
                         <div className="input-group mb-1">
                             <div className="input-group-prepend">
-                                <span className="form_label">Tiền khách đưa</span>
+                                <span className="form_label h6">Tiền khách đưa</span>
                             </div>
-                            <input type="Number" className="" 
+                            <input type="Number" className="h5" 
                             onChange={(e) =>setOrder_info({...order_info,tiendua:e.target.value * 1000})}
                             aria-label="Amount (to the nearest dollar)"/>
                             <div className="input-group-append">
-                                <span className="input-group-text">.000 VND</span>
+                                <span className="input-group-text place-ho">.000 VND</span>
                             </div>
                         </div>
                        
