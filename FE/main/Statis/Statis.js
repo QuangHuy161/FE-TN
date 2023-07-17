@@ -1,7 +1,6 @@
 import Axios from "axios"
 import React, { useState } from "react"
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 
 function getDate(time){
@@ -30,31 +29,30 @@ function Static(){
             >
                 Biểu đồ
             </div>
-            <div class="pe rounded p-2 m-1 col-sm bg-success text-white"
-            onClick={() => setPageStat('')}
-            >
-                .
-            </div>
+            
         </div> 
     )
     
 
     function ShowOrder(){
+        let t=data.forEach
 
+        return(
+            <table>
+                <thead>
+
+                </thead>
+                <tbody>
+                    {t}
+                </tbody>
+            </table>
+            
+        )
     }
 
 
     function LoadOrder(){
 
-        const LoadTopping = ({topp}) =>{
-            if( topp.length === 0) return <></>
-            let t = topp.map( (item,i) => <tr key={item.ten + i} className="text-end">
-                <td >{item.ten}</td>
-                <td >{item.gia}</td>
-            </tr>)
-
-            return <table className="w-100">{t}</table>
-        }
         
         if (data[0]===undefined|| data[0]===null)
         return (<></>)
@@ -62,10 +60,10 @@ function Static(){
         let key = Object.keys(data[0])
         key.pop()
         let t = data.map((item,index) =>
-            <tr data={index} key={index} className="border-bottom ">
+            <tr data={index} key={index} className="border-bottom border-primary">
             {
                 key.map((el,i) =>
-                    <td key={i} data={el}> {(el!=='order') ? item[el]: 'order'}</td>
+                    <td key={i} data={el}> {(el!=='order') ? item[el]:JSON.stringify(item[el])}</td>
                 )
             }
             </tr>
@@ -77,8 +75,8 @@ function Static(){
                 height:"50vh",
                 overflowY:"scroll"
                 }}>
-                <table className="w-100 border-1">
-                    <thead>
+                <table className="w-100 border-1 table-striped table-bordered">
+                    <thead className="thead-light ">
                         <th>ID</th>
                         <th>Tên khách</th>
                         <th>SDT</th>
@@ -177,14 +175,7 @@ function Static(){
             <h1>Biểu đồ</h1>
         </div>
     )
-    else
-    if(pageStat==="")
-    return(
-        <div className="Stat">
-            {top_link}
-            <h1>.</h1>
-        </div>
-    )
+    
 }
 
 export default Static;

@@ -44,3 +44,18 @@
   cursor: pointer;
   color: #198754;
 }
+
+td[data="order"]{
+  background-color: #98ddc6;
+  width: 10vh;
+  height: 3vh;
+  overflow-y: scroll;
+}
+
+.thead-light{
+  position: sticky;
+  top: 0;
+  background-color: #198754;
+  color: white;
+ 
+}

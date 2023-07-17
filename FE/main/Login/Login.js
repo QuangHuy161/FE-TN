@@ -17,7 +17,6 @@ function Login(props) {
     else{
       Axios.post('http://localhost:5000/auth/signup',{
         fullname:fullname,
-        mail:mail,
         password:password
       })
     }
